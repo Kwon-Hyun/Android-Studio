@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mynavapplication_11week.databinding.FragmentExamineBinding
+import com.example.mynavapplication_11week.viewmodel.MbtiViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -16,6 +18,7 @@ import com.example.mynavapplication_11week.databinding.FragmentExamineBinding
  */
 class ExamineFragment : Fragment() {
 
+    val viewModel: MbtiViewModel by activityViewModels()
     var binding : FragmentExamineBinding? = null
 
     override fun onCreateView(
@@ -41,6 +44,26 @@ class ExamineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.mbti.observe(viewLifecycleOwner) {
+            binding?.chkE?.isChecked = viewModel.isE
+            binding?.chkN?.isChecked = viewModel.isN
+            binding?.chkF?.isChecked = viewModel.isF
+            binding?.chkN?.isChecked = viewModel.isJ
+        }
+        binding?.chkE?.setOnClickListener {
+            viewModel.setE( binding?.chkE?.isChecked ?: false )
+        }
+        binding?.chkN?.setOnClickListener {
+            viewModel.setN( binding?.chkN?.isChecked ?: false )
+        }
+        binding?.chkF?.setOnClickListener {
+            viewModel.setF( binding?.chkF?.isChecked ?: false )
+        }
+        binding?.chkJ?.setOnClickListener {
+            viewModel.setJ( binding?.chkJ?.isChecked ?: false )
+        }
+
 
         binding?.btnResult?.setOnClickListener {
             val result = examineMBTI()
